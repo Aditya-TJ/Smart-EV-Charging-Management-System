@@ -135,22 +135,16 @@ Configure your local MySQL and administrator credentials:
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
-DB_PASSWORD=your_mysql_password
+DB_PASSWORD=your_mysql_password_here
 DB_NAME=smart_ev
 
 # Administrator Credentials (Read locally, excluded from Git)
 INITIAL_ADMIN_NAME=System Administrator
 INITIAL_ADMIN_EMAIL=admin@smartev.com
-INITIAL_ADMIN_PASSWORD=Admin@123
+INITIAL_ADMIN_PASSWORD=your_secure_admin_password_here
 ```
 
-## Default Demonstration Credentials
-
-For academic project evaluation, the following credentials are configured:
-
-| Role | Email | Password | Access Level |
-| :--- | :--- | :--- | :--- |
-| **System Administrator** | `admin@smartev.com` | `Admin@123` | Full access to all 8 modules & dashboard |
+Administrator credentials are read exclusively from local environment variables and hashed using bcrypt. After setting up `.env.local`, provision the account using `npm run db:seed-admin`.
 
 ## Running the Application
 
