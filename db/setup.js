@@ -95,7 +95,7 @@ async function runSetup() {
     multipleStatements: true,
   });
 
-  // Strictly ONLY the 5 approved additive SQL files in sequential dependency order.
+  // Strictly ONLY the approved additive SQL files in sequential dependency order.
   // schema.sql, data.sql, and optional_demo_data_fix.sql are EXCLUDED to protect live data.
   const sqlFiles = [
     '01_views.sql',        // 1. Relational Views (v_available_points, v_charging_history, v_station_revenue)
@@ -103,6 +103,7 @@ async function runSetup() {
     '03_triggers.sql',     // 3. Validation & 1:1 Integrity Triggers (trg_session_bi/bu, trg_payment_bi)
     '04_procedures.sql',   // 4. Stored Procedure (sp_station_revenue)
     '05_demo_queries.sql', // 5. Viva Demo Queries verification
+    '06_admin_auth.sql',   // 6. Administrator Authentication & Session tables
   ];
 
   try {
@@ -119,7 +120,7 @@ async function runSetup() {
       console.log(`✓ ${file} (${statements.length} statement${statements.length === 1 ? '' : 's'}) executed successfully.`);
     }
 
-    console.log('--- All 5 additive database scripts verified and deployed successfully! ---');
+    console.log('--- All 6 additive database scripts verified and deployed successfully! ---');
   } catch (err) {
     console.error('Database setup failed:', err.message);
     process.exit(1);
