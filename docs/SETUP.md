@@ -144,12 +144,13 @@ npm run db:setup
 ### What This Command Does:
 1. Executes `node db/setup.js`.
 2. Connects to `smart_ev` using `.env.local`.
-3. Safely parses and applies the 5 approved additive SQL scripts in dependency order:
+3. Safely parses and applies the 6 approved additive SQL scripts in dependency order:
    - `db/01_views.sql`: Deploys `v_available_points`, `v_charging_history`, and `v_station_revenue`.
    - `db/02_functions.sql`: Deploys `fn_session_cost`.
    - `db/03_triggers.sql`: Deploys `trg_session_bi`, `trg_session_bu`, and `trg_payment_bi`.
    - `db/04_procedures.sql`: Deploys `sp_station_revenue`.
    - `db/05_demo_queries.sql`: Validates viva demo queries against the live schema.
+   - `db/06_admin_auth.sql`: Deploys administrator authentication and session tables (`admin_users`, `admin_sessions`, `admin_login_attempts`).
 
 > **Integrity Guarantee:** `npm run db:setup` is strictly non-destructive. It executes only idempotent `CREATE OR REPLACE` and `DROP ... IF EXISTS` statements on routines and views. It does **NOT** truncate tables, modify columns, or alter sample records.
 

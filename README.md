@@ -53,7 +53,7 @@ The system runs on the `smart_ev` database across 12 relational tables:
 ## Project Structure
 
 ```
-EVDBMS/
+Smart-EV-Charging-Management-System/
 ├── app/                  # Next.js App Router (pages and API routes)
 │   ├── api/              # Backend API route handlers (users, sessions, payments, auth, etc.)
 │   │   └── auth/         # Login, logout, and session identity APIs
@@ -73,21 +73,29 @@ EVDBMS/
 │   ├── 02_functions.sql  # Stored function (fn_session_cost)
 │   ├── 03_triggers.sql   # Relational integrity triggers
 │   ├── 04_procedures.sql # Stored procedure (sp_station_revenue)
+│   ├── 05_demo_queries.sql # Viva demo query validations
 │   ├── 06_admin_auth.sql # Administrator authentication & session tables
+│   ├── optional_demo_data_fix.sql # Demo data reconciliation script
 │   ├── seed-admin.js     # Administrator seed and safe password update utility
 │   ├── setup.js          # Non-destructive additive database setup runner
 │   └── test-phase8.js    # Authentication and security test suite
+├── docs/                 # Detailed documentation
+│   └── SETUP.md          # Comprehensive system setup & deployment guide
 ├── lib/                  # DB connection pool (db.js) and Auth/CSRF engine (auth.js)
 ├── middleware.js         # Edge route guard protecting dashboard and module pages
+├── schema.sql            # Base relational database schema (9 core tables)
+├── data.sql              # Baseline sample dataset
+├── .env.local.example    # Environment variable configuration template
 ├── package.json          # Dependencies and scripts
 └── README.md             # Project documentation
 ```
 
 ## Installation and Setup
 
-1. **Clone or open the repository folder:**
+1. **Clone the repository:**
    ```bash
-   cd EVDBMS
+   git clone https://github.com/Akash-MP19/Smart-EV-Charging-Management-System.git
+   cd Smart-EV-Charging-Management-System
    ```
 
 2. **Install dependencies:**
@@ -95,23 +103,56 @@ EVDBMS/
    npm install
    ```
 
-3. **Database Setup:**
-   - **For a fresh installation:** Create the database in MySQL and import the base schema and sample records:
+3. **Configure Environment Variables:**
+   Create a `.env.local` configuration file by copying `.env.local.example`:
+   - **Linux / macOS / Windows PowerShell:**
      ```bash
-     mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS smart_ev;"
-     mysql -u root -p smart_ev < schema.sql
-     mysql -u root -p smart_ev < data.sql
+     cp .env.local.example .env.local
      ```
-   - **For an existing database:** If you already have `smart_ev` loaded with tables and sample data, skip this step to avoid overwriting existing data.
+   - **Windows Command Prompt (`cmd.exe`):**
+     ```cmd
+     copy .env.local.example .env.local
+     ```
 
-4. **Deploy Database Objects:**
-   Deploy or refresh views, functions, triggers, procedures, and admin tables:
+   Open `.env.local` and configure your local MySQL connection credentials and initial administrator account:
+   ```ini
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=your_mysql_password_here
+   DB_NAME=smart_ev
+
+   # Administrator Credentials (Read locally, excluded from Git)
+   INITIAL_ADMIN_NAME=System Administrator
+   INITIAL_ADMIN_EMAIL=admin@smartev.com
+   INITIAL_ADMIN_PASSWORD=your_secure_admin_password_here
+   ```
+   > **Note:** Configuring `.env.local` prior to running database scripts is essential so that `npm run db:setup` and `npm run db:seed-admin` can connect to MySQL and provision credentials.
+
+4. **Initialize MySQL Database & Base Schema:**
+   - **For a fresh installation:** Create the database in MySQL and import the base schema and sample records:
+     - **Linux / macOS / Git Bash:**
+       ```bash
+       mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS smart_ev;"
+       mysql -u root -p smart_ev < schema.sql
+       mysql -u root -p smart_ev < data.sql
+       ```
+     - **Windows PowerShell:**
+       ```powershell
+       mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS smart_ev;"
+       Get-Content schema.sql | mysql -u root -p smart_ev
+       Get-Content data.sql | mysql -u root -p smart_ev
+       ```
+   - **For an existing database:** If you already have `smart_ev` loaded with tables and sample data, skip importing `schema.sql` and `data.sql` to avoid overwriting existing data.
+
+5. **Deploy Additive Database Objects:**
+   Deploy or refresh views, functions, triggers, procedures, and administrator authentication tables:
    ```bash
    npm run db:setup
    ```
-   *(Note: `npm run db:setup` is non-destructive and will not modify or drop your existing customer data).*
+   *(Note: `npm run db:setup` is non-destructive, idempotent, and will not modify or drop your existing customer data).*
 
-5. **Provision Administrator Account:**
+6. **Provision Administrator Account:**
    Seed the initial administrator account from environment variables:
    ```bash
    npm run db:seed-admin
@@ -121,31 +162,6 @@ EVDBMS/
    npm run db:seed-admin -- --update-password
    ```
 
-## Environment Configuration
-
-Create a `.env.local` file in the project root by copying `.env.local.example`:
-
-```bash
-cp .env.local.example .env.local
-```
-
-Configure your local MySQL and administrator credentials:
-
-```ini
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=your_mysql_password_here
-DB_NAME=smart_ev
-
-# Administrator Credentials (Read locally, excluded from Git)
-INITIAL_ADMIN_NAME=System Administrator
-INITIAL_ADMIN_EMAIL=admin@smartev.com
-INITIAL_ADMIN_PASSWORD=your_secure_admin_password_here
-```
-
-Administrator credentials are read exclusively from local environment variables and hashed using bcrypt. After setting up `.env.local`, provision the account using `npm run db:seed-admin`.
-
 ## Running the Application
 
 - **Development server:**
@@ -154,8 +170,10 @@ Administrator credentials are read exclusively from local environment variables 
   ```
 - **Run Phase 8 Security & Auth Test Suite:**
   ```bash
-  node db/test-phase8.js
+  npm run test:auth
+  # or: node db/test-phase8.js
   ```
+  *(Note: Ensure the development server `npm run dev` is running before executing this test suite, as it verifies live HTTP endpoints, cookie authentication, brute-force rate limiting, and CSRF protection).*
 - **Code linting:**
   ```bash
   npm run lint
