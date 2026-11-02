@@ -1,7 +1,13 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
+import { requireAdminAuth } from '@/lib/auth';
 
-export async function GET() {
+export const dynamic = 'force-dynamic';
+
+export async function GET(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const statsSql = `
       SELECT 

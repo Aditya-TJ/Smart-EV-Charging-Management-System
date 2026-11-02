@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { handleApiError } from '@/lib/api-helpers';
+import { requireAdminAuth } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/stations/[id]
@@ -10,6 +13,9 @@ import { handleApiError } from '@/lib/api-helpers';
  * 3. Read-only clean energy mix from station_energy_source JOIN energy_source
  */
 export async function GET(request, { params }) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const stationId = Number(params.id);
     if (isNaN(stationId)) {

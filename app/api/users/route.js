@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { handleApiError } from '@/lib/api-helpers';
+import { requireAdminAuth } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/users
@@ -8,6 +11,9 @@ import { handleApiError } from '@/lib/api-helpers';
  * Calculates vehicle count per user via LEFT JOIN + GROUP BY.
  */
 export async function GET(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search')?.trim() || '';
@@ -46,6 +52,9 @@ export async function GET(request) {
  * Validates name and email strictly on server.
  */
 export async function POST(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const body = await request.json();
     const { name, email, phone, address } = body;
@@ -93,6 +102,9 @@ export async function POST(request) {
  * Updates an existing user record by user_id.
  */
 export async function PUT(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const body = await request.json();
     const { user_id, name, email, phone, address } = body;
@@ -136,6 +148,9 @@ export async function PUT(request) {
  * Blocks deletion if the user owns vehicles or has sessions.
  */
 export async function DELETE(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');

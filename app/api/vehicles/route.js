@@ -1,12 +1,18 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { handleApiError } from '@/lib/api-helpers';
+import { requireAdminAuth } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/vehicles
  * Lists vehicles joined with user details. Supports filtering by ?user_id=...
  */
 export async function GET(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('user_id');
@@ -46,6 +52,9 @@ export async function GET(request) {
  * Validates vehicle_number, model, battery_capacity (>0), user_id.
  */
 export async function POST(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const body = await request.json();
     const { vehicle_number, model, battery_capacity, user_id } = body;
@@ -106,6 +115,9 @@ export async function POST(request) {
  * Updates an existing vehicle record.
  */
 export async function PUT(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const body = await request.json();
     const { vehicle_id, vehicle_number, model, battery_capacity, user_id } = body;
@@ -157,6 +169,9 @@ export async function PUT(request) {
  * Enforces requirement: Delete blocked if vehicle has charging sessions.
  */
 export async function DELETE(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');

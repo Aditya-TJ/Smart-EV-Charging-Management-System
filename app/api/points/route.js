@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { handleApiError } from '@/lib/api-helpers';
+import { requireAdminAuth } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/points
@@ -8,6 +11,9 @@ import { handleApiError } from '@/lib/api-helpers';
  * Supports filters: ?station_id=..., ?status=..., ?available_only=true, ?distinct_connectors=true
  */
 export async function GET(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const stationId = searchParams.get('station_id');
@@ -96,6 +102,9 @@ export async function GET(request) {
  * Warns if total points will exceed total_slots of the station (Issue I6).
  */
 export async function POST(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const body = await request.json();
     const { connector_type, power_rating_kw, station_id } = body;
@@ -167,6 +176,9 @@ export async function POST(request) {
  * Status remains system-managed by session lifecycle.
  */
 export async function PUT(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const body = await request.json();
     const { point_id, connector_type, power_rating_kw, station_id } = body;
@@ -214,6 +226,9 @@ export async function PUT(request) {
  * Enforces requirement: Delete blocked if the point has sessions.
  */
 export async function DELETE(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');

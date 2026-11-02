@@ -1,12 +1,31 @@
 import './globals.css';
 import Navbar from '@/components/Navbar';
+import { cookies, headers } from 'next/headers';
+import { validateSession } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 
 export const metadata = {
   title: 'Smart EV Charging & Energy Management System',
   description: 'DBMS Academic Project for PES University - MySQL 8.0 & Next.js App Router',
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const headersList = headers();
+  const pathname = headersList.get('x-pathname') || '';
+
+  // Server-side session verification for protected page routes
+  if (pathname && pathname !== '/login' && !pathname.startsWith('/api/')) {
+    const cookieStore = cookies();
+    const token = cookieStore.get('admin_session_token')?.value;
+    if (!token) {
+      redirect('/login');
+    }
+    const session = await validateSession(token);
+    if (!session) {
+      redirect('/login');
+    }
+  }
+
   return (
     <html lang="en">
       <body className="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">

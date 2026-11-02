@@ -1,13 +1,19 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { handleApiError } from '@/lib/api-helpers';
+import { requireAdminAuth } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/stations
  * Lists stations with total slots, status, contact_number,
  * and actual point counts (LEFT JOIN + GROUP BY).
  */
-export async function GET() {
+export async function GET(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const sql = `
       SELECT 
@@ -35,6 +41,9 @@ export async function GET() {
  * Creates a new charging station.
  */
 export async function POST(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const body = await request.json();
     const { name, location, total_slots, status, contact_number } = body;
@@ -89,6 +98,9 @@ export async function POST(request) {
  * Updates an existing charging station.
  */
 export async function PUT(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const body = await request.json();
     const { station_id, name, location, total_slots, status, contact_number } = body;
@@ -138,6 +150,9 @@ export async function PUT(request) {
  * Blocks deletion if the station has associated charging points.
  */
 export async function DELETE(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');

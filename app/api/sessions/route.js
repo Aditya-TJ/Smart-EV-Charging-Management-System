@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { query, withTransaction } from '@/lib/db';
 import { handleApiError } from '@/lib/api-helpers';
+import { requireAdminAuth } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 /**
  * Format a Date or date string to MySQL DATETIME 'YYYY-MM-DD HH:mm:ss'
@@ -28,6 +31,9 @@ function toMysqlDatetime(val) {
  * Computes live duration, calls fn_session_cost, and computes derived payment status.
  */
 export async function GET(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
@@ -127,6 +133,9 @@ export async function GET(request) {
  * Enforces transaction management, vehicle ownership validation, and row-locking on charging_point.
  */
 export async function POST(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const body = await request.json();
     const {
@@ -301,6 +310,9 @@ export async function POST(request) {
  *  - general update: Updates energy consumed or plan for existing session.
  */
 export async function PUT(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const body = await request.json();
     const { session_id, action, energy_consumed_kwh, end_time, plan_id } = body;
@@ -416,6 +428,9 @@ export async function PUT(request) {
  * If deleting an ongoing session, releases the charging point back to 'available'.
  */
 export async function DELETE(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');

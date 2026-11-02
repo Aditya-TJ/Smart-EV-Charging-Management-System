@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { handleApiError } from '@/lib/api-helpers';
+import { requireAdminAuth } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,6 +26,9 @@ function isValidDate(dateStr) {
  * Also queries CTE + DENSE_RANK() for stations ranked by number of charging sessions.
  */
 export async function GET(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const fromDate = searchParams.get('from_date');

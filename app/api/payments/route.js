@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { query, withTransaction } from '@/lib/db';
 import { handleApiError } from '@/lib/api-helpers';
+import { requireAdminAuth } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/payments
@@ -10,6 +13,9 @@ import { handleApiError } from '@/lib/api-helpers';
  *  - ?calculate_cost=true&session_id=... : evaluates fn_session_cost(session_id).
  */
 export async function GET(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const eligibleSessions = searchParams.get('eligible_sessions') === 'true';
@@ -128,6 +134,9 @@ export async function GET(request) {
  * and non-negative amount within an ACID transaction.
  */
 export async function POST(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const body = await request.json();
     const { session_id, amount, payment_method, payment_date } = body;
@@ -248,6 +257,9 @@ export async function POST(request) {
  * Reverts the session's derived payment status back to 'Pending'.
  */
 export async function DELETE(request) {
+  const auth = await requireAdminAuth(request);
+  if (!auth.authenticated) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
