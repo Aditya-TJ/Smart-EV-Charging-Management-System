@@ -461,7 +461,7 @@ export default function PointsPage() {
               name="custom_connector"
               value={formData.custom_connector}
               onChange={(e) => setFormData({ ...formData, custom_connector: e.target.value })}
-              placeholder="e.g. GB/T or Tesla Supercharger"
+              placeholder="e.g. Bharat DC-001 or CCS2"
               required
             />
           )}
