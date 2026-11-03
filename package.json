@@ -9,6 +9,7 @@
     "lint": "next lint",
     "db:setup": "node db/setup.js",
     "db:seed-admin": "node db/seed-admin.js",
+    "db:verify-localization": "node db/verify-localization.js",
     "test:auth": "node db/test-phase8.js"
   },
   "dependencies": {
