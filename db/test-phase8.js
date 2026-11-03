@@ -359,16 +359,16 @@ async function runTests() {
   try {
     const [userRows] = await db.query('SELECT user_id, name, email, phone FROM `user` ORDER BY user_id ASC');
     const originalCount = userRows.length;
-    const alice = userRows.find((u) => u.user_id === 1);
-    const bob = userRows.find((u) => u.user_id === 2);
-    const charlie = userRows.find((u) => u.user_id === 3);
+    const priya = userRows.find((u) => u.user_id === 1);
+    const rahul = userRows.find((u) => u.user_id === 2);
+    const sneha = userRows.find((u) => u.user_id === 3);
 
     assert(
       originalCount === 3 &&
-      alice?.email === 'alice.johnson@example.com' &&
-      bob?.email === 'bob.smith@example.com' &&
-      charlie?.email === 'charlie.brown@example.com',
-      `Original 'user' table has exactly 3 customer records with unchanged sample data (Alice Johnson, Bob Smith, Charlie Brown)`
+      priya?.email === 'priya.sharma@example.com' &&
+      rahul?.email === 'rahul.verma@example.com' &&
+      sneha?.email === 'sneha.kulkarni@example.com',
+      `Original 'user' table has exactly 3 customer records with localized Indian sample data (Priya Sharma, Rahul Verma, Sneha Kulkarni)`
     );
   } catch (err) {
     assert(false, `Customer table check error: ${err.message}`);
