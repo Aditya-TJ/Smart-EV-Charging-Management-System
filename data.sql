@@ -7,15 +7,15 @@
 
 -- 1. Insert into USER
 INSERT INTO USER (user_id, name, email, phone, address) VALUES
-(1, 'Alice Johnson', 'alice.johnson@example.com', '555-0101', '123 Maple St, New York, NY 10001'),
-(2, 'Bob Smith', 'bob.smith@example.com', '555-0202', '456 Oak Ave, Chicago, IL 60601'),
-(3, 'Charlie Brown', 'charlie.brown@example.com', '555-0303', '789 Pine Rd, Los Angeles, CA 90001');
+(1, 'Priya Sharma', 'priya.sharma@example.com', '+91-98450-12345', '12, 4th Cross, Indiranagar, Bengaluru, Karnataka 560038'),
+(2, 'Rahul Verma', 'rahul.verma@example.com', '+91-98765-23456', '45, Jubilee Hills, Road No. 36, Hyderabad, Telangana 500033'),
+(3, 'Sneha Kulkarni', 'sneha.kulkarni@example.com', '+91-97654-34567', '88, FC Road, Shivajinagar, Pune, Maharashtra 411005');
 
 -- 2. Insert into CHARGING_STATION
 INSERT INTO CHARGING_STATION (station_id, name, location, total_slots, status, contact_number) VALUES
-(1, 'Downtown Hub', 'New York, NY', 10, 'active', '555-1001'),
-(2, 'Central Plaza Station', 'Chicago, IL', 8, 'active', '555-1002'),
-(3, 'West Coast Terminal', 'Los Angeles, CA', 12, 'maintenance', '555-1003');
+(1, 'Bengaluru Tech Park EV Hub', 'Bengaluru, Karnataka', 10, 'active', '+91-80-2841001'),
+(2, 'Hyderabad Green Energy Station', 'Hyderabad, Telangana', 8, 'active', '+91-40-2341002'),
+(3, 'Chennai Marina EV Point', 'Chennai, Tamil Nadu', 12, 'maintenance', '+91-44-2841003');
 
 -- 3. Insert into ENERGY_SOURCE
 INSERT INTO ENERGY_SOURCE (source_id, source_type, capacity_kw) VALUES
@@ -30,9 +30,9 @@ INSERT INTO TARIFF_PLAN (plan_id, plan_name, rate_per_kwh) VALUES
 
 -- 5. Insert into VEHICLE
 INSERT INTO VEHICLE (vehicle_id, vehicle_number, model, battery_capacity, user_id) VALUES
-(1, 'EV-1001', 'Tata Nexon EV', 40.50, 1),
-(2, 'EV-2002', 'Hyundai Kona', 39.20, 2),
-(3, 'EV-3003', 'MG ZS EV', 50.30, 3);
+(1, 'KA-03-AB-1234', 'Tata Nexon EV', 40.50, 1),
+(2, 'TS-09-CD-5678', 'Hyundai Kona Electric', 39.20, 2),
+(3, 'MH-12-EF-9012', 'MG ZS EV', 50.30, 3);
 
 -- 6. Insert into CHARGING_POINT
 INSERT INTO CHARGING_POINT (point_id, connector_type, power_rating_kw, status, station_id) VALUES
