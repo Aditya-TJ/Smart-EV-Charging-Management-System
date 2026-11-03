@@ -3,6 +3,7 @@
 -- File: db/05_demo_queries.sql
 -- Description: Curated Demo Queries for Viva Examination
 -- DBMS Syllabus: Units 1, 2, and 3
+-- Sample Data: Localized with Indian EV network records (Bengaluru, Hyderabad, Chennai)
 -- ================================================================
 
 -- ----------------------------------------------------------------
