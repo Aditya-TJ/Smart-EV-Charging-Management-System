@@ -186,12 +186,12 @@ npm run lint
    http://localhost:3000
    ```
 2. The **Smart EV Charging & Energy Management System** dashboard will load, displaying live database counts:
-   - **Users:** 3
-   - **Vehicles:** 3
-   - **Stations:** 3
+   - **Users:** 3 (Priya Sharma, Rahul Verma, Sneha Kulkarni)
+   - **Vehicles:** 4 (Tata Nexon EV, Hyundai Kona Electric, MG ZS EV, Mahindra XUV400)
+   - **Stations:** 3 (Bengaluru, Hyderabad, Chennai hubs)
    - **Charging Points:** 6
    - **Charging Sessions:** 3
-   - **Payments:** 2
+   - **Payments:** 3
 3. Use the top navigation bar to navigate through all eight modules (M1–M8).
 4. Verify backend health by querying the API health check directly in your browser or curl:
    ```
