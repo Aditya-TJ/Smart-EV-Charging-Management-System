@@ -423,7 +423,7 @@ export default function StationsPage() {
             name="name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="e.g. Metro Grid Hub East"
+            placeholder="e.g. Mumbai Central Charging Hub"
             required
             error={formErrors.name}
           />
@@ -433,7 +433,7 @@ export default function StationsPage() {
             name="location"
             value={formData.location}
             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-            placeholder="e.g. 104 Industrial Way, Seattle, WA"
+            placeholder="e.g. Mumbai, Maharashtra"
             required
             error={formErrors.location}
           />
@@ -470,7 +470,7 @@ export default function StationsPage() {
             name="contact_number"
             value={formData.contact_number}
             onChange={(e) => setFormData({ ...formData, contact_number: e.target.value })}
-            placeholder="e.g. 555-1044"
+            placeholder="e.g. +91-22-22001004"
             helpText="Emergency or operator hotline contact_number."
           />
 
