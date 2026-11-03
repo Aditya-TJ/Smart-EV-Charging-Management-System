@@ -314,7 +314,7 @@ export default function VehiclesPage() {
             name="vehicle_number"
             value={formData.vehicle_number}
             onChange={(e) => setFormData({ ...formData, vehicle_number: e.target.value })}
-            placeholder="e.g. EV-4004 or KA-01-AB-1234"
+            placeholder="e.g. KA-03-AB-1234 or TS-09-CD-5678"
             required
             error={formErrors.vehicle_number}
             helpText="Must be unique across all vehicles (UNIQUE constraint)."
@@ -325,7 +325,7 @@ export default function VehiclesPage() {
             name="model"
             value={formData.model}
             onChange={(e) => setFormData({ ...formData, model: e.target.value })}
-            placeholder="e.g. Tesla Model 3 or Tata Nexon EV"
+            placeholder="e.g. Tata Nexon EV or Mahindra XUV400"
             required
             error={formErrors.model}
           />
