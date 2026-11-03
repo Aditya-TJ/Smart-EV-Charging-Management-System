@@ -270,7 +270,7 @@ export default function UsersPage() {
             name="name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="e.g. Eleanor Vance"
+            placeholder="e.g. Mahesh Kumar"
             required
             error={formErrors.name}
           />
@@ -281,7 +281,7 @@ export default function UsersPage() {
             type="email"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            placeholder="e.g. eleanor@example.com"
+            placeholder="e.g. mahesh.kumar@example.com"
             required
             error={formErrors.email}
             helpText="Must be unique across all customer profiles (UNIQUE constraint)."
@@ -292,7 +292,7 @@ export default function UsersPage() {
             name="phone"
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            placeholder="e.g. 555-0145"
+            placeholder="e.g. +91-98765-43210"
             error={formErrors.phone}
           />
 
@@ -303,7 +303,7 @@ export default function UsersPage() {
             rows={2}
             value={formData.address}
             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-            placeholder="e.g. 742 Evergreen Terrace, Springfield"
+            placeholder="e.g. 24, MG Road, Indiranagar, Bengaluru, Karnataka 560038"
             error={formErrors.address}
           />
 
