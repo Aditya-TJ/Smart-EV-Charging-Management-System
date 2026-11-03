@@ -50,6 +50,12 @@ The system runs on the `smart_ev` database across 12 relational tables:
 11. `admin_sessions` – Server-side session store keeping SHA-256 hashed tokens with explicit expiration.
 12. `admin_login_attempts` – Records failed login attempts by IP address and normalized email for brute-force rate limiting.
 
+### Sample Data Configuration
+The database includes realistic Indian EV ecosystem test data for academic demonstration (PES University DBMS Project):
+- **Customer Profiles:** Priya Sharma (Bengaluru, Karnataka), Rahul Verma (Hyderabad, Telangana), Sneha Kulkarni (Pune, Maharashtra).
+- **Charging Stations:** Bengaluru Tech Park EV Hub, Hyderabad Green Energy Station, Chennai Marina EV Point.
+- **Electric Vehicles:** Tata Nexon EV (`KA-03-AB-1234`), Hyundai Kona Electric (`TS-09-CD-5678`), MG ZS EV (`MH-12-EF-9012`), Mahindra XUV400 (`TN-01-GH-3456`).
+
 ## Project Structure
 
 ```
